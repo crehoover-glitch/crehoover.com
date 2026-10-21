@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recommendations | Cahaba River Estates</title>
+<meta name="description" content="Contractors, services, and restaurants neighbors trust. One vote per household.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="banner">
+  <header><div class="wrap">
+    <a class="brand" href="index.html" aria-label="Cahaba River Estates home">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="#033a5c"/><path d="M8 25c5-5 9 4 14-1s9 4 14-1" stroke="#5fd06f" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M8 31c5-4 9 3 14-1s9 3 14-1" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/><path d="M22 20c0-6 3-9 6-10-1 4-3 7-6 10zM22 20c0-5-3-8-6-9 1 4 3 6 6 9z" fill="#5fd06f"/></svg>
+      <span><b>Cahaba</b><small>RIVER ESTATES</small></span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html" aria-current="page">Recommend</a>
+      <a href="care.html">Care</a>
+      <a href="history.html">History</a>
+    </nav>
+  </div></header>
+  <div class="wrap title">
+    <h1>Neighbor <span class="accent">Recommendations</span></h1>
+    <p>Contractors, services, and restaurants neighbors trust. One vote per household.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 35 C240 70 480 0 720 35 S1200 70 1440 35 V70 H0Z" fill="#fff"/></svg>
+</div>
+
+<main class="wrap">
+<div id="gate"></div>
+<div id="app" hidden>
+  <label>Search<input id="q" type="search" placeholder="Try: plumber, pizza, roof"></label>
+  <div class="cats" id="cats"></div>
+  <div id="list" class="list"></div>
+  <h2>Recommend someone</h2>
+  <form class="box" id="rform">
+    <label>Category<select name="category" id="catsel"></select></label>
+    <label>Business or person<input name="name" required placeholder="Joe's Plumbing"></label>
+    <div class="row2">
+      <label>Phone (optional)<input name="phone" type="tel" placeholder="205-555-0100"></label>
+      <label>Website (optional)<input name="website" placeholder="joesplumbing.com"></label>
+    </div>
+    <label>Why do you recommend them? (optional)<textarea name="note" placeholder="Fair price, showed up on time, cleaned up after."></textarea></label>
+    <button class="btn big" type="submit">Add recommendation</button>
+  </form>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
+  <span><a href="news.html">News</a> &middot; <a href="city.html">City Services</a> &middot; <a href="about.html">About</a> &middot; <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+const {api,gate,esc,wilson,$}=CRE; let ME=null, CAT='All';
+const CATS=['Plumbers','Electricians','Heating & Air','Roofing','Lawn & Tree','Handyman','Painters','Pest Control','Cleaning','Auto','Restaurants','Doctors & Vets','Other'];
+$('#catsel').innerHTML=CATS.map(c=>`<option>${c}</option>`).join('');
+async function draw(){
+  const [recs,votes]=await Promise.all([api.list('recs'),api.list('rec_votes')]);
+  const q=$('#q').value.trim().toLowerCase();
+  const scored=recs.map(r=>{const v=votes.filter(x=>x.rec_id==r.id);const up=v.filter(x=>x.value>0).length,down=v.length-up;return{...r,up,down,mine:(v.find(x=>x.user_id==ME.id)||{}).value||0,s:wilson(up,down)}});
+  const counts={};scored.forEach(r=>counts[r.category]=(counts[r.category]||0)+1);
+  $('#cats').innerHTML=['All',...CATS.filter(c=>counts[c])].map(c=>`<button data-cat="${c}" aria-pressed="${c==CAT}">${c}${c=='All'?'':' ('+counts[c]+')'}</button>`).join('');
+  const list=scored.filter(r=>(CAT=='All'||r.category==CAT)&&(!q||(r.name+' '+r.category+' '+(r.note||'')).toLowerCase().includes(q))).sort((a,b)=>b.s-a.s||b.up-a.up);
+  $('#list').innerHTML=list.length?list.map(r=>{const site=r.website?(/^https?:/.test(r.website)?r.website:'https://'+r.website):'';
+    return `<article class="item"><span class="tag">${esc(r.category)}</span><h3 style="margin-top:8px">${esc(r.name)}</h3>
+    ${r.phone||site?`<p class="meta">${r.phone?`<a href="tel:${esc(r.phone)}">${esc(r.phone)}</a>`:''}${r.phone&&site?' &middot; ':''}${site?`<a href="${esc(site)}" target="_blank" rel="noopener">Website</a>`:''}</p>`:''}
+    ${r.note?`<p>${esc(r.note)}</p>`:''}
+    <div class="actions votes"><button class="up ${r.mine>0?'on':''}" data-vote="${r.id}" data-v="1" aria-label="Thumbs up">👍 ${r.up}</button><button class="down ${r.mine<0?'on':''}" data-vote="${r.id}" data-v="-1" aria-label="Thumbs down">👎 ${r.down}</button>
+    ${r.created_by==ME.id||ME.is_admin?`<button class="link" data-del="${r.id}" style="min-width:0;border:0">Delete</button>`:''}</div></article>`}).join(''):'<p class="empty">Nothing here yet. Be the first to recommend someone.</p>';
+}
+document.addEventListener('click',async ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.cat){CAT=b.dataset.cat;draw()}
+  if(b.dataset.vote){const id=+b.dataset.vote,v=+b.dataset.v;const cur=b.classList.contains('on');
+    await api.remove('rec_votes',{rec_id:id,user_id:ME.id});if(!cur)await api.add('rec_votes',{rec_id:id,value:v});draw()}
+  if(b.dataset.del&&confirm('Delete this recommendation?')){await api.remove('recs',{id:+b.dataset.del});draw()}});
+$('#q').oninput=draw;
+$('#rform').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+  await api.add('recs',f).catch(()=>alert('Could not save. Try again.'));CAT=f.category;e.target.reset();draw();scrollTo({top:0,behavior:'smooth'})};
+document.addEventListener('DOMContentLoaded',()=>gate($('#gate'),me=>{ME=me;$('#app').hidden=false;draw()},'see and add recommendations'));
+</script>
+</body>
+</html>

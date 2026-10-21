@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Care Calendar | Cahaba River Estates</title>
+<meta name="description" content="When a neighbor has surgery, a new baby, or a loss, sign up for a day to bring a meal or lend a hand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="banner">
+  <header><div class="wrap">
+    <a class="brand" href="index.html" aria-label="Cahaba River Estates home">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="#033a5c"/><path d="M8 25c5-5 9 4 14-1s9 4 14-1" stroke="#5fd06f" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M8 31c5-4 9 3 14-1s9 3 14-1" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/><path d="M22 20c0-6 3-9 6-10-1 4-3 7-6 10zM22 20c0-5-3-8-6-9 1 4 3 6 6 9z" fill="#5fd06f"/></svg>
+      <span><b>Cahaba</b><small>RIVER ESTATES</small></span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html">Recommend</a>
+      <a href="care.html" aria-current="page">Care</a>
+      <a href="history.html">History</a>
+    </nav>
+  </div></header>
+  <div class="wrap title">
+    <h1>Care <span class="accent">Calendar</span></h1>
+    <p>When a neighbor has surgery, a new baby, or a loss, sign up for a day to bring a meal or lend a hand.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 35 C240 70 480 0 720 35 S1200 70 1440 35 V70 H0Z" fill="#fff"/></svg>
+</div>
+
+<main class="wrap">
+<div id="gate"></div>
+<div id="app" hidden>
+  <div id="list" class="list"></div>
+  <h2>Start a care calendar</h2>
+  <form class="box" id="cform">
+    <label>Who is it for?<input name="for_whom" required placeholder="The Johnsons"></label>
+    <label>Title<input name="title" required placeholder="Meals after Bob's knee surgery"></label>
+    <label>Details (drop-off time, allergies, what helps most)<textarea name="details" placeholder="Drop dinner on the porch around 5:30. No shellfish."></textarea></label>
+    <p><b>Days and needs</b></p>
+    <div id="rows"></div>
+    <p><button type="button" class="btn gray small" id="addrow">+ Add another day</button></p>
+    <button class="btn big" type="submit">Create care calendar</button>
+  </form>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
+  <span><a href="news.html">News</a> &middot; <a href="city.html">City Services</a> &middot; <a href="about.html">About</a> &middot; <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+const {api,gate,names,esc,fmtDate,$}=CRE; let ME=null;
+function row(){const d=document.createElement('div');d.className='row2';d.innerHTML=`<label>Date<input type="date" name="day" required></label><label>Need<input name="need" required value="Dinner"></label>`;$('#rows').append(d)}
+row();row();$('#addrow').onclick=row;
+async function draw(){
+  const [pgs,slots,nm]=await Promise.all([api.list('care_pages'),api.list('care_slots'),names()]);
+  const today=new Date().toISOString().slice(0,10);
+  $('#list').innerHTML=pgs.length?pgs.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(p=>{
+    const ss=slots.filter(s=>s.page_id==p.id&&s.day>=today).sort((a,b)=>a.day.localeCompare(b.day)||a.id-b.id);
+    const own=p.created_by==ME.id||ME.is_admin;
+    return `<article class="item"><span class="tag">For ${esc(p.for_whom||'a neighbor')}</span><h3 style="margin-top:8px">${esc(p.title)}</h3>
+      <p class="meta">Organized by ${esc(nm[p.created_by]||'a neighbor')}</p>${p.details?`<p>${esc(p.details)}</p>`:''}
+      ${ss.length?ss.map(s=>`<div class="slot"><span><b>${fmtDate(s.day+'T12:00:00')}</b><br>${esc(s.need)}</span>
+        ${s.claimed_by?(s.claimed_by==ME.id?`<span><b>You've got this one.</b> <button class="btn gray small" data-release="${s.id}">Release</button></span>`:`<span class="who-list">Taken by ${esc(nm[s.claimed_by]||'a neighbor')}</span>`):`<button class="btn small" data-claim="${s.id}">I'll take this</button>`}</div>`).join(''):'<p class="empty">No upcoming days.</p>'}
+      ${own?`<div class="actions"><button class="link" data-del="${p.id}">Delete this care calendar</button></div>`:''}</article>`}).join(''):'<p class="empty">No care calendars right now.</p>';
+}
+document.addEventListener('click',async ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.claim){b.disabled=true;await api.edit('care_slots',{id:+b.dataset.claim},{claimed_by:ME.id}).catch(()=>alert('Someone may have just taken it. Refreshing.'));draw()}
+  if(b.dataset.release){await api.edit('care_slots',{id:+b.dataset.release},{claimed_by:null});draw()}
+  if(b.dataset.del&&confirm('Delete this care calendar?')){await api.remove('care_pages',{id:+b.dataset.del});draw()}});
+$('#cform').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);
+  try{const p=await api.add('care_pages',{title:f.get('title'),for_whom:f.get('for_whom'),details:f.get('details')});
+    const days=f.getAll('day'),needs=f.getAll('need');
+    for(let i=0;i<days.length;i++)if(days[i])await api.add('care_slots',{page_id:p.id,day:days[i],need:needs[i]||'Help'});}
+  catch(err){alert('Could not save. Try again.')}
+  e.target.reset();$('#rows').innerHTML='';row();row();draw();scrollTo({top:0,behavior:'smooth'})};
+document.addEventListener('DOMContentLoaded',()=>gate($('#gate'),me=>{ME=me;$('#app').hidden=false;draw()},'see and sign up for care calendars'));
+</script>
+</body>
+</html>

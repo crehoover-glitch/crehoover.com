@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>News | Cahaba River Estates</title>
+<meta name="description" content="Updates from the board and neighborhood editors.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="banner">
+  <header><div class="wrap">
+    <a class="brand" href="index.html" aria-label="Cahaba River Estates home">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="#033a5c"/><path d="M8 25c5-5 9 4 14-1s9 4 14-1" stroke="#5fd06f" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M8 31c5-4 9 3 14-1s9 3 14-1" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/><path d="M22 20c0-6 3-9 6-10-1 4-3 7-6 10zM22 20c0-5-3-8-6-9 1 4 3 6 6 9z" fill="#5fd06f"/></svg>
+      <span><b>Cahaba</b><small>RIVER ESTATES</small></span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html">Recommend</a>
+      <a href="care.html">Care</a>
+      <a href="history.html">History</a>
+    </nav>
+  </div></header>
+  <div class="wrap title">
+    <h1>Neighborhood <span class="accent">News</span></h1>
+    <p>Updates from the board and neighborhood editors.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 35 C240 70 480 0 720 35 S1200 70 1440 35 V70 H0Z" fill="#fff"/></svg>
+</div>
+
+<main class="wrap">
+<div id="gate"></div>
+<div id="list" class="list"></div>
+<div id="add" hidden>
+  <h2>Post news</h2>
+  <form class="box" id="nform">
+    <label>Headline<input name="title" required placeholder="Entrance landscaping this Saturday"></label>
+    <label>Story<textarea name="body" required></textarea></label>
+    <button class="btn big" type="submit">Publish</button>
+  </form>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
+  <span><a href="news.html">News</a> &middot; <a href="city.html">City Services</a> &middot; <a href="about.html">About</a> &middot; <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+const {api,gate,names,esc,fmtDate,$}=CRE; let ME=null;
+async function draw(){const [ns,nm]=await Promise.all([api.list('news'),names()]);
+  $('#list').innerHTML=ns.length?ns.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(n=>`<article class="item"><h3>${esc(n.title)}</h3><p class="meta">${fmtDate(n.created_at,{month:'long',day:'numeric',year:'numeric'})} &middot; ${esc(nm[n.created_by]||'The board')}</p><p class="wikibody">${esc(n.body)}</p>${ME.is_admin?`<button class="link" data-del="${n.id}">Delete</button>`:''}</article>`).join(''):'<p class="empty">No news yet.</p>'}
+document.addEventListener('click',async ev=>{const b=ev.target.closest('button[data-del]');if(b&&confirm('Delete this post?')){await api.remove('news',{id:+b.dataset.del});draw()}});
+$('#nform').onsubmit=async e=>{e.preventDefault();await api.add('news',Object.fromEntries(new FormData(e.target))).catch(()=>alert('Only board members and editors can post news.'));e.target.reset();draw()};
+document.addEventListener('DOMContentLoaded',()=>gate($('#gate'),me=>{ME=me;$('#add').hidden=!me.is_admin;draw()},'read neighborhood news'));
+</script>
+</body>
+</html>

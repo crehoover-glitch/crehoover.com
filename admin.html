@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Board tools | Cahaba River Estates</title>
+<meta name="description" content="Approve new households. Only board members can use this page.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="banner">
+  <header><div class="wrap">
+    <a class="brand" href="index.html" aria-label="Cahaba River Estates home">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="#033a5c"/><path d="M8 25c5-5 9 4 14-1s9 4 14-1" stroke="#5fd06f" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M8 31c5-4 9 3 14-1s9 3 14-1" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/><path d="M22 20c0-6 3-9 6-10-1 4-3 7-6 10zM22 20c0-5-3-8-6-9 1 4 3 6 6 9z" fill="#5fd06f"/></svg>
+      <span><b>Cahaba</b><small>RIVER ESTATES</small></span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html">Recommend</a>
+      <a href="care.html">Care</a>
+      <a href="history.html">History</a>
+    </nav>
+  </div></header>
+  <div class="wrap title">
+    <h1>Board <span class="accent">Tools</span></h1>
+    <p>Approve new households. Only board members can use this page.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 35 C240 70 480 0 720 35 S1200 70 1440 35 V70 H0Z" fill="#fff"/></svg>
+</div>
+
+<main class="wrap">
+<div id="gate"></div>
+<div id="app" hidden>
+  <h2>Waiting for approval</h2>
+  <div id="pending" class="list"></div>
+  <h2>Approved households</h2>
+  <div id="approved" class="list"></div>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
+  <span><a href="news.html">News</a> &middot; <a href="city.html">City Services</a> &middot; <a href="about.html">About</a> &middot; <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+const {api,gate,esc,fmtDate,$}=CRE; let ME=null;
+async function draw(){const ps=await api.list('profiles');
+  const card=(p,act)=>`<article class="item"><h3>${esc(p.name)}</h3><p class="meta">${esc(p.street||'')} &middot; joined ${fmtDate(p.created_at,{month:'short',day:'numeric',year:'numeric'})}${p.is_admin?' &middot; <b>Board / editor</b>':''}</p><div class="actions">${act}</div></article>`;
+  const pend=ps.filter(p=>!p.approved),ok=ps.filter(p=>p.approved).sort((a,b)=>a.name.localeCompare(b.name));
+  $('#pending').innerHTML=pend.length?pend.map(p=>card(p,`<button class="btn small" data-ok="${p.id}">Approve</button><button class="btn gray small" data-no="${p.id}">Remove</button>`)).join(''):'<p class="empty">Nobody waiting.</p>';
+  $('#approved').innerHTML=ok.map(p=>card(p,p.id==ME.id?'':`<button class="btn gray small" data-admin="${p.id}" data-v="${!p.is_admin}">${p.is_admin?'Remove board access':'Make board / editor'}</button><button class="link" data-no="${p.id}">Remove household</button>`)).join('')}
+document.addEventListener('click',async ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.ok){await api.edit('profiles',{id:b.dataset.ok},{approved:true});draw()}
+  if(b.dataset.admin){await api.edit('profiles',{id:b.dataset.admin},{is_admin:b.dataset.v==='true'});draw()}
+  if(b.dataset.no&&confirm('Remove this household? They can sign up again later.')){await api.remove('profiles',{id:b.dataset.no});draw()}});
+document.addEventListener('DOMContentLoaded',()=>gate($('#gate'),me=>{if(!me.is_admin){$('#gate').insertAdjacentHTML('beforeend','<p>This page is for board members.</p>');return}ME=me;$('#app').hidden=false;draw()},'use board tools'));
+</script>
+</body>
+</html>

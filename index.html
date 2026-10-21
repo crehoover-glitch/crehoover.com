@@ -7,6 +7,7 @@
 <meta name="description" content="Cahaba River Estates neighborhood association in Hoover, Alabama. Events, news, and how to get involved.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="app.css">
 <style>
 :root{--navy:#05507f;--navy2:#033a5c;--green:#5fd06f;--btn:#3fa34d;--pale:#eaf5fc;--ink:#14324a;--muted:#4f6577;--white:#fff}
 *{box-sizing:border-box}
@@ -86,7 +87,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
 @media (max-width:820px){
   header{position:absolute;padding:14px 0}
-  nav{width:100%;justify-content:space-between;padding:6px}
+  nav{width:100%;justify-content:center;flex-wrap:wrap;padding:6px;border-radius:24px}
   nav a{padding:8px 10px;font-size:.88rem}
   .hero{min-height:600px}
   .hero .wrap{padding-bottom:48px;padding-top:170px}
@@ -103,11 +104,11 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       <span><b>Cahaba</b><small>RIVER ESTATES</small></span>
     </a>
     <nav>
-      <a href="about.html">About</a>
-      <a href="#events">Events</a>
-      <a href="#news">News</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html">Recommend</a>
       <a href="history.html">History</a>
-      <a href="#contact">Contact</a>
+      <a href="about.html">About</a>
     </nav>
   </div>
 </header>
@@ -170,41 +171,53 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       <h1>Cahaba River Estates</h1>
       <p>A neighborhood in Hoover, Alabama. Our association brings neighbors together for social events, community projects, and a good time along the river.</p>
       <div class="btns">
-        <a class="btn" href="#events">Upcoming events <i>&rarr;</i></a>
+        <a class="btn" href="#tools">What do you need? <i>&rarr;</i></a>
         <a class="btn outline" href="#contact">Get involved</a>
       </div>
     </div>
   </div>
 
 
-  <section id="events" class="pale">
+  <section id="tools" class="pale">
+    <div class="wrap">
+      <h2>Around the <span class="accent">Neighborhood</span></h2>
+      <p class="lead">Tap a button. Sign in once with your email, no password needed.</p>
+      <div class="tiles">
+        <a class="tile" href="events.html"><b>Events</b><span>Potlucks and cookouts. RSVP with one tap.</span></a>
+        <a class="tile" href="help.html"><b>I Need Help</b><span>Ask neighbors for a ride, a hand, or advice.</span></a>
+        <a class="tile" href="help.html#offer"><b>I Can Help</b><span>Share a skill or lend a hand.</span></a>
+        <a class="tile" href="recommend.html"><b>Recommendations</b><span>Contractors and restaurants neighbors trust.</span></a>
+        <a class="tile" href="care.html"><b>Care Calendar</b><span>Sign up to bring a meal to a neighbor.</span></a>
+        <a class="tile" href="news.html"><b>Neighborhood News</b><span>Updates from the board.</span></a>
+        <a class="tile" href="history.html"><b>Our History</b><span>The old lodge, the river, and your stories.</span></a>
+        <a class="tile" href="city.html"><b>City Services</b><span>Potholes, streetlights, trash, power outages.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="events">
     <div class="wrap">
       <h2>Upcoming <span class="accent">Events</span></h2>
-      <p class="lead">Dates and details are posted here as they are set.</p>
-      <!-- EDIT EVENTS HERE: copy one <li> block per event -->
-      <ul class="events">
+      <p class="lead">Sign in to see details and RSVP.</p>
+      <ul class="events" id="home-events">
         <li class="event">
           <div class="date"><span>Oct</span><b>31</b></div>
           <div><h3>Halloween</h3><p>Trick-or-treat details to be announced.</p></div>
         </li>
-        <li class="event">
-          <div class="date"><span>Dec</span><b>TBD</b></div>
-          <div><h3>Holiday gathering</h3><p>Date and location to be announced.</p></div>
-        </li>
       </ul>
+      <p style="margin-top:28px"><a class="btn" href="events.html">See all events <i>&rarr;</i></a></p>
     </div>
   </section>
 
-  <section id="news">
+  <section id="news" class="pale">
     <div class="wrap">
       <h2>Neighborhood <span class="accent">News</span></h2>
       <p class="lead">Announcements and updates.</p>
-      <!-- EDIT NEWS HERE: newest at top -->
-      <div class="news">
+      <div class="news" id="home-news">
         <article>
           <h3>New neighborhood website</h3>
           <time datetime="2026-10-21">October 21, 2026</time>
-          <p>Cahaba River Estates now has a home online. Check back for event dates and updates.</p>
+          <p>Cahaba River Estates now has a home online. Sign in to RSVP, ask for a hand, or share a good contractor.</p>
         </article>
       </div>
     </div>
@@ -226,9 +239,21 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <footer>
   <div class="wrap">
     <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
-    <span>crehoover.com</span>
+    <span><a href="city.html" style="color:#fff">City Services</a> &middot; <a href="admin.html" style="color:#fff">Board tools</a></span>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+(async()=>{const {api,esc,fmtDate}=CRE;
+  try{const me=await api.me();if(!me||!me.approved)return;
+    const ev=(await api.list('events')).filter(e=>new Date(e.starts_at)>Date.now()-6*3600e3).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at)).slice(0,4);
+    if(ev.length)document.getElementById('home-events').innerHTML=ev.map(e=>{const d=new Date(e.starts_at);return `<li class="event"><div class="date"><span>${d.toLocaleString('en-US',{month:'short'})}</span><b>${d.getDate()}</b></div><div><h3>${esc(e.title)}</h3><p>${esc(e.location||'')}${e.cap?' &middot; '+e.cap+' spots':''}</p></div></li>`}).join('');
+    const ns=(await api.list('news')).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,3);
+    if(ns.length)document.getElementById('home-news').innerHTML=ns.map(n=>`<article><h3>${esc(n.title)}</h3><time>${fmtDate(n.created_at,{month:'long',day:'numeric',year:'numeric'})}</time><p>${esc(n.body)}</p></article>`).join('');
+  }catch(e){}})();
+</script>
 <script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
 </body>
 </html>

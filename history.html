@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305507f'/%3E%3Cpath d='M4 20c4-4 8 4 12 0s8 4 12 0' stroke='%235fd06f' stroke-width='3.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
 <div class="banner">
@@ -18,10 +19,11 @@
     </a>
     <nav>
       <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="index.html#events">Events</a>
+      <a href="events.html">Events</a>
+      <a href="help.html">Help Board</a>
+      <a href="recommend.html">Recommend</a>
+      <a href="care.html">Care</a>
       <a href="history.html" aria-current="page">History</a>
-      <a href="index.html#contact">Contact</a>
     </nav>
   </div></header>
   <div class="wrap title">
@@ -38,9 +40,10 @@
       <li><a href="#overview">Overview</a></li>
       <li><a href="#river">The Cahaba River</a></li>
       <li><a href="#hoover">Hoover grows south</a></li>
+      <li><a href="#lodge">The old lodge</a></li>
       <li><a href="#homes">The homes</a></li>
       <li><a href="#timeline">Timeline</a></li>
-      <li><a href="#stories">Neighbor stories</a></li>
+      <li><a href="#stories">Neighbor pages</a></li>
       <li><a href="#sources">Sources</a></li>
     </ol>
   </aside>
@@ -76,6 +79,13 @@
       <p class="muted">Help wanted: when was Cahaba River Estates platted, who developed it, and when did it join Hoover?</p>
     </section>
 
+    <section id="lodge">
+      <h2>The old lodge</h2>
+      <p>The oldest house in the neighborhood stands at 1122 Cahaba River Estates. It was built in 1928 on roughly 8 acres along the river and was used as a summer home and hunting retreat.<sup><a href="#r2">2</a></sup></p>
+      <p>Neighbors confirm it was the old lodge of this stretch of north Shelby County, and longtime residents remember it as a lively place where people hunted, gathered, and gambled in its early decades. North Shelby County had a reputation for that kind of roadhouse back then, and the state archives hold a photo of a raided "house casino" in the county from that era, though which house it shows is not identified.<sup><a href="#r6">6</a></sup></p>
+      <p class="muted">Help wanted: who built the lodge, who ran it, and when did the land around it become Cahaba River Estates? Add what you know on the neighbor pages below.</p>
+    </section>
+
     <section id="homes">
       <h2>The homes</h2>
       <p>Most homes in the area were built between 1970 and 1999, with a smaller number built since 2000. Nearly all are owner-occupied.<sup><a href="#r1">1</a></sup> At least one property in the subdivision dates to 1928, with large acreage and about 600 feet of river frontage.<sup><a href="#r2">2</a></sup></p>
@@ -85,7 +95,7 @@
       <h2>Timeline</h2>
       <ul class="timeline">
         <li><b>1820–1825</b> Cahawba serves as Alabama's first state capital.</li>
-        <li><b>1928</b> Earliest known house in the subdivision is built.</li>
+        <li><b>1928</b> The lodge is built on about 8 acres along the river as a summer home and hunting retreat.</li>
         <li><b>1967</b> Hoover incorporates.</li>
         <li><b>1970s–1990s</b> Most of the neighborhood's homes are built.</li>
         <li><b>1980</b> Riverchase is annexed into Hoover.</li>
@@ -95,10 +105,19 @@
     </section>
 
     <section id="stories">
-      <h2>Neighbor stories</h2>
-      <div class="callout">
-        <p><b>Help write our history.</b> Lived here a long time? Have old photos, plats, newsletters, or a story about the river? Send them to <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a> and we'll add them here.</p>
+      <h2>Neighbor pages</h2>
+      <p>Anyone in the neighborhood can add a page or fix one. Every change is saved, so nothing is ever lost.</p>
+      <div id="gate"></div>
+      <div id="wiki" hidden>
+        <div id="pages" class="list"></div>
+        <form class="box" id="wform">
+          <h3>Add a page</h3>
+          <label>Title<input name="title" required placeholder="The flood of 1979"></label>
+          <label>Your story or facts<textarea name="body" required placeholder="Write it the way you'd tell it."></textarea></label>
+          <button class="btn big" type="submit">Add page</button>
+        </form>
       </div>
+      <div class="callout"><p><b>Have old photos, plats, or newsletters?</b> Send them to <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a> and we'll add them.</p></div>
     </section>
 
     <section id="sources">
@@ -109,6 +128,7 @@
         <li id="r3">"Cahaba River," Wikipedia. en.wikipedia.org/wiki/Cahaba_River</li>
         <li id="r4">Hoover Historical Society, "History of Hoover." hooverhistoricalsociety.org</li>
         <li id="r5">"Riverchase," Bhamwiki. bhamwiki.com/w/Riverchase</li>
+        <li id="r6">Alabama Department of Archives and History, "House casino in Shelby County, Alabama, after a raid by law enforcement." digital.archives.alabama.gov</li>
       </ol>
     </section>
   </article>
@@ -116,8 +136,29 @@
 
 <footer><div class="wrap">
   <span>&copy; <span id="yr">2026</span> Cahaba River Estates HOA &middot; Hoover, Alabama</span>
-  <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a>
+  <span><a href="news.html">News</a> &middot; <a href="city.html">City Services</a> &middot; <a href="about.html">About</a> &middot; <a href="mailto:crehoover@gmail.com">crehoover@gmail.com</a></span>
 </div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/cre.js"></script>
+<script>
+const {api,gate,names,esc,fmtDate,$}=CRE; let ME=null;
+async function draw(){const [pg,rv,nm]=await Promise.all([api.list('wiki_pages'),api.list('wiki_revisions'),names()]);
+  $('#pages').innerHTML=pg.sort((a,b)=>a.title.localeCompare(b.title)).map(p=>{const old=rv.filter(r=>r.page_id==p.id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+    return `<article class="item" id="pg-${p.id}"><h3>${esc(p.title)}</h3><p class="meta">Last edited ${fmtDate(p.updated_at,{month:'short',day:'numeric',year:'numeric'})}${p.updated_by&&nm[p.updated_by]?' by '+esc(nm[p.updated_by]):''}</p>
+      <div class="wikibody">${esc(p.body)}</div>
+      <details><summary>Edit this page</summary><form data-edit="${p.id}" style="margin-top:12px"><label>Title<input name="title" value="${esc(p.title)}" required></label><label>Text<textarea name="body" rows="10" required>${esc(p.body)}</textarea></label><button class="btn big" type="submit">Save changes</button></form></details>
+      ${old.length?`<details><summary>Earlier versions (${old.length})</summary>${old.map(r=>`<div class="box" style="margin:12px 0"><p class="meta">${fmtDate(r.created_at,{month:'short',day:'numeric',year:'numeric'})}${r.edited_by&&nm[r.edited_by]?' &middot; '+esc(nm[r.edited_by]):''}</p><div class="wikibody">${esc(r.body)}</div>${ME.is_admin?`<p style="margin-top:10px"><button class="btn gray small" data-restore="${r.id}" data-page="${p.id}">Restore this version</button></p>`:''}</div>`).join('')}</details>`:''}
+    </article>`}).join('')||'<p class="empty">No neighbor pages yet.</p>';
+  window._rv=rv}
+document.addEventListener('submit',async e=>{const id=e.target.dataset.edit;if(!id)return;e.preventDefault();const f=new FormData(e.target);
+  await api.edit('wiki_pages',{id:+id},{title:f.get('title'),body:f.get('body'),updated_by:ME.id,updated_at:new Date().toISOString()}).catch(()=>alert('Could not save. Try again.'));draw()});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-restore]');if(!b||!confirm('Restore this earlier version? The current text is kept in the history too.'))return;
+  const r=window._rv.find(x=>x.id==b.dataset.restore);await api.edit('wiki_pages',{id:+b.dataset.page},{title:r.title,body:r.body,updated_by:ME.id,updated_at:new Date().toISOString()});draw()});
+$('#wform').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const t=f.get('title');
+  await api.add('wiki_pages',{title:t,body:f.get('body'),slug:t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now().toString(36)}).catch(()=>alert('Could not save. Try again.'));e.target.reset();draw()};
+document.addEventListener('DOMContentLoaded',()=>gate($('#gate'),me=>{ME=me;$('#wiki').hidden=false;draw()},'read and add neighbor pages'));
+</script>
 <script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
 </body>
 </html>
