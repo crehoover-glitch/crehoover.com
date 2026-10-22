@@ -29,10 +29,10 @@ nav a{color:#fff;text-decoration:none;font-weight:600;padding:8px 16px;border-ra
 nav a:hover{background:rgba(255,255,255,.14)}
 
 /* hero */
-.hero{position:relative;min-height:760px;display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:#7fb6d6}
+.hero{position:relative;min-height:520px;display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:#7fb6d6}
 .hero .scene{position:absolute;inset:0;width:100%;height:100%}
 .hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,40,64,.6) 0%,rgba(3,40,64,.25) 45%,rgba(3,40,64,0) 70%),linear-gradient(180deg,rgba(3,40,64,.25) 0%,rgba(3,40,64,0) 35%,rgba(3,40,64,.45) 100%)}
-.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:70px}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:48px;padding-top:110px}
 .hero .kicker{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;margin:0;line-height:1.05}
 .hero h1{font-size:clamp(2.6rem,8.5vw,6rem);font-weight:800;text-transform:uppercase;margin:0 0 16px;line-height:1;letter-spacing:-1px;text-shadow:0 2px 18px rgba(0,0,0,.25)}
 .hero p{font-size:1.15rem;max-width:620px;margin:0 0 28px;font-weight:600;text-shadow:0 1px 10px rgba(0,0,0,.35)}
@@ -58,6 +58,18 @@ h2{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;line-height:1.1;margin:0 0
 .pill h3{margin:0 0 4px;font-size:1.2rem;font-weight:700}
 .pill p{margin:0;color:var(--muted);font-size:.97rem}
 
+
+/* coming up */
+#upnext{padding:56px 0}
+.upnext{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:start}
+.upnext h2{font-size:clamp(1.6rem,3.5vw,2.2rem);margin:0 0 14px}
+.upnext .events{grid-template-columns:1fr;gap:14px}
+.upnext .event .btn{margin-top:10px;font-size:.95rem;padding:6px 6px 6px 16px}
+.upnext .event .btn i{width:28px;height:28px}
+.morelink{display:inline-block;margin-top:14px;font-weight:700}
+.newsline{background:#fff;border-radius:22px;padding:20px 22px;border-left:6px solid var(--green);box-shadow:0 8px 26px rgba(5,80,127,.10)}
+.newsline h3{margin:0;color:var(--navy);font-size:1.1rem}
+.newsline time{color:var(--muted);font-size:.85rem;font-weight:600}
 
 /* events */
 .events{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
@@ -89,8 +101,16 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   header{position:absolute;padding:14px 0}
   nav{width:100%;justify-content:center;flex-wrap:wrap;padding:6px;border-radius:24px}
   nav a{padding:8px 10px;font-size:.88rem}
-  .hero{min-height:600px}
-  .hero .wrap{padding-bottom:48px;padding-top:170px}
+  .hero{min-height:0}
+  .hero .wrap{padding-bottom:32px;padding-top:190px}
+  .hero p{font-size:1.05rem;margin-bottom:20px}
+  .hero .btn.outline{display:none}
+  .upnext{grid-template-columns:1fr;gap:18px}
+  .upnext .events .event:nth-child(n+2){display:none}
+  .tiles{grid-template-columns:1fr 1fr;gap:12px}
+  .tile{padding:18px 16px;border-top-width:5px}
+  .tile b{font-size:1.15rem;margin:0}
+  .tile span{display:none}
   section{padding:64px 0}
 }
 </style>
@@ -169,7 +189,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
     <div class="wrap">
       <p class="kicker"><span class="accent">Welcome to</span></p>
       <h1>Cahaba River Estates</h1>
-      <p>A neighborhood in Hoover, Alabama. Our association brings neighbors together for social events, community projects, and a good time along the river.</p>
+      <p>A neighborhood in Hoover, Alabama, where neighbors come together along the river.</p>
       <div class="btns">
         <a class="btn" href="#tools">What do you need? <i>&rarr;</i></a>
         <a class="btn outline" href="#contact">Get involved</a>
@@ -178,47 +198,41 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   </div>
 
 
-  <section id="tools" class="pale">
+  <section id="upnext" class="pale">
+    <div class="wrap upnext">
+      <div id="events">
+        <h2>Coming <span class="accent">Up</span></h2>
+        <ul class="events" id="home-events">
+          <li class="event">
+            <div class="date"><span>Oct</span><b>31</b></div>
+            <div><h3>Halloween</h3><p>Trick-or-treat details to be announced.</p><a class="btn" href="events.html">RSVP <i>&rarr;</i></a></div>
+          </li>
+        </ul>
+        <a class="morelink" href="events.html">See all events &rarr;</a>
+      </div>
+      <div id="news">
+        <h2>Latest <span class="accent">News</span></h2>
+        <div id="home-news">
+          <a class="newsline" href="news.html" style="display:block;text-decoration:none"><h3>New neighborhood website</h3><time datetime="2026-10-21">October 21, 2026</time></a>
+        </div>
+        <a class="morelink" href="news.html">All news &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools">
     <div class="wrap">
       <h2>Around the <span class="accent">Neighborhood</span></h2>
       <p class="lead">Tap a button. Sign in once with your email, no password needed.</p>
       <div class="tiles">
         <a class="tile" href="events.html"><b>Events</b><span>Potlucks and cookouts. RSVP with one tap.</span></a>
-        <a class="tile" href="help.html"><b>I Need Help</b><span>Ask neighbors for a ride, a hand, or advice.</span></a>
-        <a class="tile" href="help.html#offer"><b>I Can Help</b><span>Share a skill or lend a hand.</span></a>
-        <a class="tile" href="recommend.html"><b>Recommendations</b><span>Contractors and restaurants neighbors trust.</span></a>
-        <a class="tile" href="care.html"><b>Care Calendar</b><span>Sign up to bring a meal to a neighbor.</span></a>
-        <a class="tile" href="news.html"><b>Neighborhood News</b><span>Updates from the board.</span></a>
-        <a class="tile" href="history.html"><b>Our History</b><span>The old lodge, the river, and your stories.</span></a>
+        <a class="tile" href="help.html"><b>Need Help</b><span>Ask neighbors for a ride, a hand, or advice.</span></a>
+        <a class="tile" href="help.html#offer"><b>Can Help</b><span>Share a skill or lend a hand.</span></a>
+        <a class="tile" href="recommend.html"><b>Recommend</b><span>Contractors and restaurants neighbors trust.</span></a>
+        <a class="tile" href="care.html"><b>Care</b><span>Sign up to bring a meal to a neighbor.</span></a>
+        <a class="tile" href="news.html"><b>News</b><span>Updates from the board.</span></a>
+        <a class="tile" href="history.html"><b>History</b><span>The old lodge, the river, and your stories.</span></a>
         <a class="tile" href="city.html"><b>City Services</b><span>Potholes, streetlights, trash, power outages.</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section id="events">
-    <div class="wrap">
-      <h2>Upcoming <span class="accent">Events</span></h2>
-      <p class="lead">Sign in to see details and RSVP.</p>
-      <ul class="events" id="home-events">
-        <li class="event">
-          <div class="date"><span>Oct</span><b>31</b></div>
-          <div><h3>Halloween</h3><p>Trick-or-treat details to be announced.</p></div>
-        </li>
-      </ul>
-      <p style="margin-top:28px"><a class="btn" href="events.html">See all events <i>&rarr;</i></a></p>
-    </div>
-  </section>
-
-  <section id="news" class="pale">
-    <div class="wrap">
-      <h2>Neighborhood <span class="accent">News</span></h2>
-      <p class="lead">Announcements and updates.</p>
-      <div class="news" id="home-news">
-        <article>
-          <h3>New neighborhood website</h3>
-          <time datetime="2026-10-21">October 21, 2026</time>
-          <p>Cahaba River Estates now has a home online. Sign in to RSVP, ask for a hand, or share a good contractor.</p>
-        </article>
       </div>
     </div>
   </section>
@@ -248,10 +262,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <script>
 (async()=>{const {api,esc,fmtDate}=CRE;
   try{const me=await api.me();if(!me||!me.approved)return;
-    const ev=(await api.list('events')).filter(e=>new Date(e.starts_at)>Date.now()-6*3600e3).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at)).slice(0,4);
-    if(ev.length)document.getElementById('home-events').innerHTML=ev.map(e=>{const d=new Date(e.starts_at);return `<li class="event"><div class="date"><span>${d.toLocaleString('en-US',{month:'short'})}</span><b>${d.getDate()}</b></div><div><h3>${esc(e.title)}</h3><p>${esc(e.location||'')}${e.cap?' &middot; '+e.cap+' spots':''}</p></div></li>`}).join('');
-    const ns=(await api.list('news')).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,3);
-    if(ns.length)document.getElementById('home-news').innerHTML=ns.map(n=>`<article><h3>${esc(n.title)}</h3><time>${fmtDate(n.created_at,{month:'long',day:'numeric',year:'numeric'})}</time><p>${esc(n.body)}</p></article>`).join('');
+    const ev=(await api.list('events')).filter(e=>new Date(e.starts_at)>Date.now()-6*3600e3).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at)).slice(0,3);
+    if(ev.length)document.getElementById('home-events').innerHTML=ev.map(e=>{const d=new Date(e.starts_at);return `<li class="event"><div class="date"><span>${d.toLocaleString('en-US',{month:'short'})}</span><b>${d.getDate()}</b></div><div><h3>${esc(e.title)}</h3><p>${d.toLocaleDateString('en-US',{weekday:'short'})} ${d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}${e.location?' &middot; '+esc(e.location):''}</p><a class="btn" href="events.html">RSVP <i>&rarr;</i></a></div></li>`}).join('');
+    const ns=(await api.list('news')).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,1);
+    if(ns.length)document.getElementById('home-news').innerHTML=ns.map(n=>`<a class="newsline" href="news.html" style="display:block;text-decoration:none"><h3>${esc(n.title)}</h3><time>${fmtDate(n.created_at,{month:'long',day:'numeric',year:'numeric'})}</time></a>`).join('');
   }catch(e){}})();
 </script>
 <script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
